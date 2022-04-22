@@ -2,6 +2,7 @@ import Joi from "joi";
 import { ObjectId } from "mongodb";
 import { getDB } from "*/config/mongodb";
 
+
 const columnCollectionName = 'columns'
 const columnCollectionSchema = Joi.object ({
     boardId: Joi.string().required(),

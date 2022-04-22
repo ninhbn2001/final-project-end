@@ -55,4 +55,4 @@ const update = async (id, data) => {
     }
 }
 
-    export const BoardService = { createNew, getFullBoard, update }
+export const BoardService = { createNew, getFullBoard, update }

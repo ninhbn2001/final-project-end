@@ -12,13 +12,13 @@ export const connectDB = async () => {
     // connect the clinet to the server
     await client.connect()
 
-    //assign clientDB to our db instance
-    dbInstance = client.db(env.DATABASE_NAME)
+//     //assign clientDB to our db instance
+        dbInstance = client.db(env.DATABASE_NAME)
 }
 
-//Get Database Instance
+// //Get Database Instance
 export const getDB = () => {
     if (!dbInstance) throw new Error ('Must connect to the database first.')
-    return dbInstance
+   return dbInstance
 }
 
