@@ -13,6 +13,7 @@ router.route('/')
 // // .get((req, res) => console.log('GET boards'))
 // .get(BoardController.getFullBoard) 
 // .put(BoardValidation.update, BoardController.update)
-
+// router.route('/getusers')
+// .get(UserController.getData) 
 
 export const userRoutes = router

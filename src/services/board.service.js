@@ -1,5 +1,6 @@
 import { BoardModel } from "*/models/board.model"
 import { cloneDeep } from "lodash";
+import { getDB } from "*/config/mongodb";
 
 const createNew = async (data) => {
     try {
@@ -28,8 +29,6 @@ const getFullBoard = async (boardId) => {
         })
 
         //sort column by mapOder (This step will do in fornt end)
-
-
         delete transformBoard.cards
         return transformBoard;
     } catch (error) {
@@ -55,4 +54,15 @@ const update = async (id, data) => {
     }
 }
 
-export const BoardService = { createNew, getFullBoard, update }
+const getAllBoard = async (data) => {
+    try {
+        const result = await getDB().collection('boards').find()
+        console.log(result)
+        return result
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+
+export const BoardService = { createNew, getFullBoard, update, getAllBoard }

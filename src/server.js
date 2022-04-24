@@ -24,7 +24,6 @@ app.use(express.json())
 
 app.use('/routers', api);
 const bootServer = () => {
-    
     app.listen(env.PORT, env.HOST, () => {
         console.log(`Server is running on ${env.HOST}:${env.PORT}`);
     });
