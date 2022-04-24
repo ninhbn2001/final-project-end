@@ -56,9 +56,8 @@ const update = async (id, data) => {
 
 const getAllBoard = async (data) => {
     try {
-        const result = await getDB().collection('boards').find()
-        console.log(result)
-        return result
+        const board = await BoardModel.getAllBoard()
+        return board;
     } catch (error) {
         throw new Error(error)
     }

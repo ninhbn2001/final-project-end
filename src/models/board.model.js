@@ -106,9 +106,7 @@ const getFullBoard = async (boardId) => {
 
 const getAllBoard = async () => {
     try {
-        const result = await getDB().collection(boardCollectionName).aggregate().toArray();
-        console.log(result);
-        getDB().close();
+        const result = await getDB().collection(boardCollectionName).find({}).toArray();
         return result
     } catch (error) {
         throw new Error(error)
