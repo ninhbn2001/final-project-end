@@ -4,7 +4,7 @@ import { getDB } from "*/config/mongodb";
 
 
 const columnCollectionName = 'columns'
-const columnCollectionSchema = Joi.object ({
+const columnCollectionSchema = Joi.object({
     boardId: Joi.string().required(),
     title: Joi.string().required().min(3).max(20).trim(),
     cardOrder: Joi.array().items(Joi.string()).default([]),
@@ -14,7 +14,7 @@ const columnCollectionSchema = Joi.object ({
 })
 
 const validateSchema = async (data) => {
-    return await columnCollectionSchema.validateAsync(data, {abortEarly: false})
+    return await columnCollectionSchema.validateAsync(data, { abortEarly: false })
 }
 
 const findOneById = async (id) => {
@@ -37,7 +37,7 @@ const createNew = async (data) => {
         const result = await getDB().collection(columnCollectionName).insertOne(insertValue)
         return result
 
-    }   catch (error) { 
+    } catch (error) {
         throw new Error(error)
     }
 }
@@ -45,13 +45,13 @@ const createNew = async (data) => {
 const pushCardOrder = async (columnId, cardId) => {
     try {
         const result = await getDB().collection(columnCollectionName).findOneAndUpdate(
-            { _id: ObjectId(columnId)},
-            { $push: {cardOrder: cardId } },
-            { returnDocument: 'after'}
+            { _id: ObjectId(columnId) },
+            { $push: { cardOrder: cardId } },
+            { returnDocument: 'after' }
         )
-            return result.value
+        return result.value
 
-    }   catch (error) { 
+    } catch (error) {
         throw new Error(error)
     }
 }
@@ -65,13 +65,13 @@ const update = async (id, data) => {
             updateData.boardId = ObjectId(data.boardId)
         }
         const result = await getDB().collection(columnCollectionName).findOneAndUpdate(
-            { _id: ObjectId(id)},
+            { _id: ObjectId(id) },
             { $set: updateData },
-            { returnDocument: 'after'}
+            { returnDocument: 'after' }
         )
         return result.value
 
-    }   catch (error) { 
+    } catch (error) {
         throw new Error(error)
     }
 }

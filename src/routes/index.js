@@ -5,6 +5,8 @@ import { columnRoutes } from "./column.route"
 import { cardRoutes } from "./card.route"
 import { userRoutes } from "./user.route"
 import { authRoutes } from "./auth.route"
+import { mileRoutes } from "./mile.route"
+
 
 const router = express.Router()
 
@@ -19,5 +21,8 @@ router.use('/cards', cardRoutes)
 router.use('/users', userRoutes)
 
 router.use('/login', authRoutes)
+
+router.use('/miles', mileRoutes)
+
 
 export const api = router

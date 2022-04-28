@@ -3,12 +3,13 @@ import { getDB } from "*/config/mongodb";
 import { ObjectId } from "mongodb";
 import { CardModel } from "./card.model"
 import { ColumnModel } from "./column.model"
-
+import { MileModel } from "./mile.model"
 
 const boardCollectionName = 'boards'
 const boardCollectionSchema = Joi.object({
     title: Joi.string().required().min(3).max(20).trim(),
     columnOrder: Joi.array().items(Joi.string()).default([]),
+    mileOrder: Joi.array().items(Joi.string()).default([]),
     createdAt: Joi.date().timestamp().default(Date.now()),
     updatedAt: Joi.date().timestamp().default(null),
     _destroy: Joi.boolean().default(false)
@@ -70,6 +71,20 @@ const pushColumnOrder = async (boardId, columnId) => {
     }
 }
 
+const pushMileOrder = async (boardId, columnId) => {
+    try {
+        const result = await getDB().collection(boardCollectionName).findOneAndUpdate(
+            { _id: ObjectId(boardId) },
+            { $push: { columnOrder: columnId } },
+            { returnDocument: 'after' }
+        )
+        return result.value
+
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 const getFullBoard = async (boardId) => {
     try {
         const result = await getDB().collection(boardCollectionName).aggregate([
@@ -94,7 +109,8 @@ const getFullBoard = async (boardId) => {
                     foreignField: 'boardId',
                     as: 'cards'
                 }
-            }
+            },
+
         ]).toArray()
 
         return result[0] || {}
@@ -103,6 +119,25 @@ const getFullBoard = async (boardId) => {
         throw new Error(error)
     }
 }
+
+const getAllColumnFromBoard = async (boardId) => {
+    try {
+        const result = await getDB().collection("columns").find({ boardId: ObjectId(boardId) }).toArray();
+        return result
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+const getAllmileFromBoard = async (boardId) => {
+    try {
+        const result = await getDB().collection("miles").find({ boardId: ObjectId(boardId) }).toArray();
+        return result
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
 
 const getAllBoard = async () => {
     try {
@@ -113,4 +148,15 @@ const getAllBoard = async () => {
     }
 }
 
-export const BoardModel = { boardCollectionName,createNew, getFullBoard, pushColumnOrder, update, findOneById, getAllBoard } 
+const deleteBoard = async (id) => {
+    try {
+
+        const result = await getDB().collection(boardCollectionName).deleteOne({ _id: ObjectId(id) })
+        return result
+
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+export const BoardModel = { boardCollectionName, createNew, getFullBoard, pushColumnOrder, update, findOneById, getAllBoard, pushMileOrder, getAllColumnFromBoard, getAllmileFromBoard, deleteBoard } 

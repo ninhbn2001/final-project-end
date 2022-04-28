@@ -3,31 +3,27 @@ import {HttpStatusCode} from "*/utilities/constants";
 
 const createNew = async (req, res, next) => {
     const condition = Joi.object ({
-        // userName: Joi.string().required(),
-        name: Joi.string().required(),
-        phonenumber: Joi.string().required(),
-        password: Joi.string().required(),
-        email: Joi.string().required(),
-        role: Joi.string().required(),
-
+        columnId: Joi.string().required(),
+        boardId: Joi.string().required(),
+        title: Joi.string().required().min(3).max(20).trim(),
+        startDate: Joi.date().timestamp().default(null),
+        endDate: Joi.date().timestamp().default(null),
     })
     try {
         await condition.validateAsync(req.body, { abortEarly: false })
         next()
     } catch (error) {
-        // res.status(HttpStatusCode.BAD_REQUEST).json({ 
-        //     errors: new Error(error).message \
-        res.status(404).json({ errors: error  });
-        
+        res.status(HttpStatusCode.BAD_REQUEST).json({ 
+            errors: new Error(error).message 
+        })
     }
 }
-
-
 
 const update = async (req, res, next) => {
     const condition = Joi.object ({
         title: Joi.string().min(3).max(20).trim(),
-        columnOrder: Joi.array().items(Joi.string())
+        startDate: Joi.date().timestamp().default(null),
+        endDate: Joi.date().timestamp().default(null),
     })
     try {
         await condition.validateAsync(req.body, { abortEarly: false, allowUnknown: true })
@@ -39,4 +35,6 @@ const update = async (req, res, next) => {
     }
 }
 
-export const UserValidation = { createNew, update }
+
+export const MileValidation = { createNew, update}
+

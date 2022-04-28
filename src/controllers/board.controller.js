@@ -13,7 +13,17 @@ const createNew = async (req, res) => {
     }
 }
 
-
+const getAllColumnFromBoard = async (req, res) => {
+    try {
+        const { id } = req.params
+        const result = await BoardService.getAllColumnFromBoard(id)
+        res.status(HttpStatusCode.OK).json(result)
+    } catch (error) {
+        res.status(HttpStatusCode.INTERNAL_SERVER).json({
+            errors: error.message
+        })
+    }
+}
 
 const getFullBoard = async (req, res) => {
     try {
@@ -50,4 +60,31 @@ const getAllBoard = async (req, res) => {
     }
 }
 
-export const BoardController = { createNew, getFullBoard, update, getAllBoard}
+
+const getAllmileFromBoard = async (req, res) => {
+    try {
+        const { id } = req.params
+        const result = await BoardService.getAllmileFromBoard(id)
+        res.status(HttpStatusCode.OK).json(result)
+    } catch (error) {
+        res.status(HttpStatusCode.INTERNAL_SERVER).json({
+            errors: error.message
+        })
+    }
+}
+
+const  deleteBoard = async (req, res) => {
+    try {
+        const { id } = req.params
+        const result = await BoardService. deleteBoard(id, req.body)
+        res.status(HttpStatusCode.OK).json(result)
+    } catch (error) {
+        res.status(HttpStatusCode.INTERNAL_SERVER).json({ 
+            errors: error.message
+         })
+    }
+ }
+
+
+
+export const BoardController = { createNew, getFullBoard, update, getAllBoard, getAllColumnFromBoard, getAllmileFromBoard, deleteBoard}

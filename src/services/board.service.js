@@ -62,6 +62,35 @@ const getAllBoard = async (data) => {
         throw new Error(error)
     }
 }
+ 
+const getAllColumnFromBoard =  async (boardId) => {
+    try {
+        const board = await BoardModel.getAllColumnFromBoard(boardId)
+        return board;
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 
 
-export const BoardService = { createNew, getFullBoard, update, getAllBoard }
+
+const getAllmileFromBoard =  async (boardId) => {
+    try {
+        const board = await BoardModel.getAllmileFromBoard(boardId)
+        return board;
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+
+const deleteBoard = async (id) => {
+    try {
+        const deleteMile = await BoardModel.deleteBoard(id)
+
+        return deleteMile;
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+export const BoardService = { createNew, getFullBoard, update, getAllBoard, getAllColumnFromBoard, getAllmileFromBoard, deleteBoard }

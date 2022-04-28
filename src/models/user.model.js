@@ -6,9 +6,11 @@ import bcrypt from "bcrypt";
 
 const userCollectionName = 'users'
 const userCollectionSchema = Joi.object ({
-    // userName: Joi.string().required(),
+    name: Joi.string().required(),
+    phonenumber: Joi.string().required(),
     password: Joi.string().required(),
-    email: Joi.string().required()
+    email: Joi.string().required(),
+    role: Joi.string().required(),
 })
 
 const validateSchema = async (data) => {
@@ -43,42 +45,51 @@ const createNew = async (data) => {
     }
 }
 
+const getAllUser = async () => {
+    try {
+        const result = await getDB().collection(userCollectionName).find({}).toArray();
+        return result
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+const update = async (id, data) => {
+    try {
+        const updateData = {
+            ...data
+        }
+        const result = await getDB().collection(userCollectionName).findOneAndUpdate(
+            { _id: ObjectId(id) },
+            { $set: updateData },
+            { returnDocument: 'after' }
+        )
+        return result.value
+
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+const deleteUser = async (id) => {
+    try {
+
+        const result = await getDB().collection(userCollectionName).deleteOne({ _id: ObjectId(id) })
+        return result
+
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+const getUserDetail = async (id) => {
+    try {
+        const result = await getDB().collection(userCollectionName).findOne({ _id: ObjectId(id) })
+        return result
+    } catch (error) {
+        throw new Error(error)
+    }
+}
 
 
-
-
-// const pushCardOrder = async (columnId, cardId) => {
-//     try {
-//         const result = await getDB().collection(columnCollectionName).findOneAndUpdate(
-//             { _id: ObjectId(columnId)},
-//             { $push: {cardOrder: cardId } },
-//             { returnDocument: 'after'}
-//         )
-//             return result.value
-
-//     }   catch (error) { 
-//         throw new Error(error)
-//     }
-// }
-
-// const update = async (id, data) => {
-//     try {
-//         const updateData = {
-//             ...data,
-//         }
-//         if (data.boardId) {
-//             updateData.boardId = ObjectId(data.boardId)
-//         }
-//         const result = await getDB().collection(columnCollectionName).findOneAndUpdate(
-//             { _id: ObjectId(id)},
-//             { $set: updateData },
-//             { returnDocument: 'after'}
-//         )
-//         return result.value
-
-//     }   catch (error) { 
-//         throw new Error(error)
-//     }
-// }
-
-export const UserModel = {userCollectionSchema, userCollectionName, createNew, findOneById } 
+export const UserModel = {userCollectionSchema, userCollectionName, createNew, findOneById, getAllUser, update, deleteUser, getUserDetail } 
